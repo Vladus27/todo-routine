@@ -1,0 +1,29 @@
+@startuml d
+
+class Task {
+  - String id
+  - String title
+  - bool isCompleted
+  - DateTime startDateTime
+  - DateTime? endDateTime
+
+  + Task.fromJson(Map<String, dynamic> json)
+  + Map<String, dynamic> toJson()
+}
+
+class TaskRepository {
+  - String fileName
+  + Future<List<Task>> loadTasks()
+  + Future<void> saveTasks(List<Task> tasks)
+}
+
+class FileHandler {
+  + Future<File> getLocalFile(String fileName)
+  + Future<String> readFile(File file)
+  + Future<void> writeFile(File file, String content)
+}
+
+TaskRepository --> Task : використовує
+TaskRepository --> FileHandler : використовує
+
+@enduml

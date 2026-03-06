@@ -1,0 +1,15 @@
+@startuml
+
+rectangle "Інтерфейс користувача (UI)" as UI
+rectangle "Контролер завдань\n(TaskController)" as Controller
+rectangle "Модель завдання\n(TaskModel)" as Model
+rectangle "Модуль збереження\n(StorageService)" as Storage
+rectangle "Локальне сховище\n(shared_preferences)" as LocalStorage
+rectangle "Конвертер JSON" as Converter
+
+UI --> Controller : обробка дій
+Controller --> Model : створення/оновлення
+Controller --> Storage : збереження / зчитування
+Model --> Converter : серіалізація
+Storage --> LocalStorage : збереження
+@enduml

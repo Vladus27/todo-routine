@@ -1,0 +1,16 @@
+@startuml
+start
+:Отримати текст з _controller;
+if (text.trim().isEmpty) then (так)
+  stop
+else (ні)
+  :Створити Task:
+  - id = now()
+  - title = text
+  - isDone = false
+  - createdAt = now()
+  :Додати Task до _activeTasks;
+  :Очистити _controller;
+endif
+stop
+@enduml

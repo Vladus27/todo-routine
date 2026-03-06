@@ -1,0 +1,17 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam componentStyle rectangle
+
+
+actor Користувач
+participant "Список завдань\n(ListView)" as ListView
+participant "Елемент завдання\n(Task Card)" as TaskCard
+participant "Контролер стану\n(setState)" as Controller
+participant "Модель завдання\n(Task)" as Task
+
+Користувач -> TaskCard : Свайп вліво
+TaskCard -> Controller : Виклик функції зміни статусу
+Controller -> Task : task.isCompeted = !task.isCompleted
+Controller -> ListView : Оновлення інтерфейсу
+ListView -> Користувач : Відображення нового стану
+@enduml

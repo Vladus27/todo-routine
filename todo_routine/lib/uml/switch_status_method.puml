@@ -1,0 +1,7 @@
+@startuml
+start
+:Отримати завдання;
+:Інвертувати isCompleted;
+:update UI через setState;
+stop
+@enduml

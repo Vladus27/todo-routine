@@ -1,0 +1,207 @@
+@startuml
+set namespaceSeparator ::
+
+class "todo_routine::models::expense.dart::Expense" {
+  +String id
+  +String title
+  +double amount
+  +DateTime date
+  +Categories category
+  +String formatedData
+}
+
+"todo_routine::models::expense.dart::Expense" o-- "todo_routine::models::expense.dart::Categories"
+
+class "todo_routine::models::expense.dart::ExpenseBucket" {
+  +Categories category
+  +List<Expense> expenses
+  +double totalExpenses
+}
+
+"todo_routine::models::expense.dart::ExpenseBucket" o-- "todo_routine::models::expense.dart::Categories"
+
+class "todo_routine::models::expense.dart::Categories" {
+  +int index
+  {static} +List<Categories> values
+  {static} +Categories food
+  {static} +Categories work
+  {static} +Categories travel
+  {static} +Categories leisure
+}
+
+"todo_routine::models::expense.dart::Categories" o-- "todo_routine::models::expense.dart::Categories"
+"dart::core::Enum" <|-- "todo_routine::models::expense.dart::Categories"
+
+class "todo_routine::models::task.dart::Task" {
+  +String task
+  +bool isCompleted
+  +String id
+  +DateTime? startDateTime
+  +DateTime? endDateTime
+  +Task copyWith()
+  {static} +String formatDate()
+  +Map<String, dynamic> toJson()
+}
+
+class "todo_routine::screens::chart::chart.dart::Chart" {
+  +List<Expense> expenses
+  +List<ExpenseBucket> buckets
+  +double maxTotalExpense
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "todo_routine::screens::chart::chart.dart::Chart"
+
+class "todo_routine::screens::chart::chart_bar.dart::ChartBar" {
+  +double fill
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "todo_routine::screens::chart::chart_bar.dart::ChartBar"
+
+class "todo_routine::screens::expenses_list::expenses_item.dart::ExpenseItem" {
+  +Expense expense
+  +Widget build()
+}
+
+"todo_routine::screens::expenses_list::expenses_item.dart::ExpenseItem" o-- "todo_routine::models::expense.dart::Expense"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "todo_routine::screens::expenses_list::expenses_item.dart::ExpenseItem"
+
+class "todo_routine::screens::expenses_list::expenses_list.dart::ExpensesList" {
+  +List<Expense> expenses
+  +void Function(Expense) onRemoveExpense
+  +Widget build()
+}
+
+"todo_routine::screens::expenses_list::expenses_list.dart::ExpensesList" o-- "null::void Function(Expense)"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "todo_routine::screens::expenses_list::expenses_list.dart::ExpensesList"
+
+class "todo_routine::screens::expenses_screen.dart::ExpensesScreen" {
+  +State<ExpensesScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "todo_routine::screens::expenses_screen.dart::ExpensesScreen"
+
+class "todo_routine::screens::expenses_screen.dart::_ExpensesScreenState" {
+  -List<Expense> _expensesList
+  +void initState()
+  -dynamic _loadExpenses()
+  -void _addExpense()
+  -void _removeExpense()
+  -void _openAddExpenseOverlay()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "todo_routine::screens::expenses_screen.dart::_ExpensesScreenState"
+
+class "todo_routine::screens::main_page_screen.dart::MainPageScreen" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "todo_routine::screens::main_page_screen.dart::MainPageScreen"
+
+class "todo_routine::screens::new_expense.dart::NewExpense" {
+  +void Function(Expense) onAddExpense
+  +State<NewExpense> createState()
+}
+
+"todo_routine::screens::new_expense.dart::NewExpense" o-- "null::void Function(Expense)"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "todo_routine::screens::new_expense.dart::NewExpense"
+
+class "todo_routine::screens::new_expense.dart::_NewExpenseState" {
+  -TextEditingController _textControler
+  -TextEditingController _amountControler
+  -DateTime? _selectedDate
+  -Categories _selecteCategory
+  -void _presentDatePicker()
+  -void _setDialogAlert()
+  -void _submitExpenseData()
+  +void dispose()
+  +Widget build()
+}
+
+"todo_routine::screens::new_expense.dart::_NewExpenseState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"todo_routine::screens::new_expense.dart::_NewExpenseState" o-- "todo_routine::models::expense.dart::Categories"
+"flutter::src::widgets::framework.dart::State" <|-- "todo_routine::screens::new_expense.dart::_NewExpenseState"
+
+class "todo_routine::screens::tasks_list::tasks_item.dart::TaskItem" {
+  +Task task
+  +Widget build()
+}
+
+"todo_routine::screens::tasks_list::tasks_item.dart::TaskItem" o-- "todo_routine::models::task.dart::Task"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "todo_routine::screens::tasks_list::tasks_item.dart::TaskItem"
+
+class "todo_routine::screens::tasks_list::tasks_list.dart::TasksList" {
+  +List<Task> task
+  +void Function(Task) onRemoveTask
+  +void Function(Task) onCompletedtask
+  +Widget build()
+}
+
+"todo_routine::screens::tasks_list::tasks_list.dart::TasksList" o-- "null::void Function(Task)"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "todo_routine::screens::tasks_list::tasks_list.dart::TasksList"
+
+class "todo_routine::screens::task_manager.dart::TaskManager" {
+  +State<TaskManager> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "todo_routine::screens::task_manager.dart::TaskManager"
+
+class "todo_routine::screens::task_manager.dart::_TaskManagerState" {
+  +List<Task> tasksList
+  -TextEditingController _task
+  -DateTime? _selectedStartDate
+  -DateTime? _selectedEndDate
+  +void initState()
+  -dynamic _addTask()
+  -dynamic _setTime()
+  +dynamic presentDatePicker()
+  +dynamic futureDatePicker()
+  -void _removeTask()
+  -void _completeTask()
+  -dynamic _loadTasksFromStorage()
+  -dynamic _saveTasksToStorage()
+  +Widget build()
+}
+
+"todo_routine::screens::task_manager.dart::_TaskManagerState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "todo_routine::screens::task_manager.dart::_TaskManagerState"
+
+class "todo_routine::screens::widgets::android_show_dialog.dart::AndroidShowDialog" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "todo_routine::screens::widgets::android_show_dialog.dart::AndroidShowDialog"
+
+class "todo_routine::screens::widgets::ios_show_dialog.dart::IosShowDialog" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "todo_routine::screens::widgets::ios_show_dialog.dart::IosShowDialog"
+
+class "todo_routine::screens::widgets::task_input.dart::TaskInput" {
+  +String titleField
+  +TextEditingController task
+  +void Function() onAddTask
+  +Widget build()
+}
+
+"todo_routine::screens::widgets::task_input.dart::TaskInput" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"todo_routine::screens::widgets::task_input.dart::TaskInput" o-- "null::void Function()"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "todo_routine::screens::widgets::task_input.dart::TaskInput"
+
+class "todo_routine::services::expenses_storage.dart::ExpensesStorage" {
+  {static} -String _key
+  {static} +dynamic saveExpenses()
+  {static} +dynamic loadExpenses()
+}
+
+class "todo_routine::todo_routine_app.dart::TodoRoutineApp" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "todo_routine::todo_routine_app.dart::TodoRoutineApp"
+
+
+@enduml
